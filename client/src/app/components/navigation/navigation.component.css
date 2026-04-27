@@ -1,0 +1,44 @@
+.header-menubar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 70px;
+    background-color: #97969433;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  
+  .header-menubar li {
+    margin: 0 15px;
+  }
+  
+  .header-menubar button {
+    font-size: 16px;
+    color: rgb(89,190,237);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .header-menubar button:hover {
+    color: #737476;
+    text-decoration: underline;
+  }
+  
+  
+  .header-menubar .active-link {
+    font-weight: bold;
+    color: #67676a;
+    text-decoration: underline;
+  }
+  
+  .image-slide {
+    width: 100%;
+    border-bottom: 0px;
+  }

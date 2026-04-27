@@ -1,0 +1,111 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table dir="rtl" #dt [value]="products" [rows]="5" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']"
+        [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="מציג {first} ל {last} של {totalRecords} ערכים" [showCurrentPageReport]="true" [rowsPerPageOptions]="[ 5,10,20]">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <h4 class="p-m-0">ניהול מתנות</h4>
+                <!-- <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                </span> -->
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="giftName"> שם מוצר <p-sortIcon field="giftName"></p-sortIcon></th>
+                <th pSortableColumn="description"> תיאור <p-sortIcon field="description"></p-sortIcon></th>
+                <th pSortableColumn="price"> מחיר כרטיס <p-sortIcon field="price"></p-sortIcon></th>
+                <th pSortableColumn="image"> תמונה <p-sortIcon field="image"></p-sortIcon></th>
+                <th pSortableColumn="quantityOfPurchases"> כמות רכישות <p-sortIcon field="quantityOfPurchases"></p-sortIcon></th>
+                <th pSortableColumn="categoryName"> קטגוריה <p-sortIcon field="categoryId"></p-sortIcon></th>
+                <th pSortableColumn="donorName"> שם תורם <p-sortIcon field="donorId"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                </td>
+                <td>{{product.giftName}}</td>
+                <td>{{product.description}}</td>
+                <td>{{product.price | currency:'USD'}}</td>
+                <td><img [src]="'images/' + product.image" [alt]="product.giftName" width="100" height="100" class="shadow-4" style="border-radius: 10px;"/></td>
+                <td>{{product.quantityOfPurchases}}</td>
+                <td>{{product.categoryName}}</td>
+                <td>{{product.donorName}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-file-edit" class="p-button-rounded p-button-success p-mr-2" [outlined]="true"  (click)="editProduct(product)" style="margin-left: 10px;"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" [outlined]="true"  (click)="deleteProduct(product)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{products ? products.length : 0 }} products.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog dir="rtl" [(visible)]="productDialog" [style]="{width: '450px'}" header="פרטי מתנה" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="giftName">שם מתנה</label>
+            <input type="text" pInputText id="name" [(ngModel)]="product.giftName" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !product.giftName">Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="description">תיאור</label>
+            <textarea id="description" pInputTextarea [(ngModel)]="product.description" required rows="3" cols="20"></textarea>
+        </div>
+        <div class="p-field">
+            <label class="donorName">תורם</label>
+            <p-dropdown [(ngModel)]="product.donorName" inputId="donorName" [options]="nameDonors" ></p-dropdown>
+        </div>
+        <div class="p-field">
+            <label for="image">תמונה</label>
+            <input type="text" pInputText id="image" [(ngModel)]="product.image" required autofocus />
+            <!-- <small class="p-invalid" *ngIf="submitted && !product.giftName">Name is required.</small> -->
+        </div>
+        <div>
+            <label class="p-mb-3">קטגוריה</label>
+            @for (c of names; track $index){
+                <div class="p-field-radiobutton p-col-6">
+                    <p-radioButton id="category1" name="category" value={{c}}
+                        [(ngModel)]="product.categoryName"></p-radioButton>
+                    <label for="category1"> {{c}}</label>
+                </div>
+                }
+        </div>
+        
+        
+        
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="price">מחיר</label>
+                <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+            </div>
+
+        </div>
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

@@ -1,0 +1,14 @@
+<header dir="rtl">
+    <ul class="header-menubar">
+      @for (c of items; track $index){
+      <button [routerLink]="c.routerLink" routerLinkActive="active-link" pButton type="button" [label]="c.label" [icon]="c.icon"
+        class="p-button-link">
+      </button>
+      }
+    </ul>
+  
+  
+  </header>
+  <main>
+    <router-outlet></router-outlet>
+  </main>

@@ -1,0 +1,102 @@
+<p-toast></p-toast>
+<p-toolbar styleClass="p-mb-4">
+
+</p-toolbar>
+<div>
+    <form [formGroup]="frmUser" class="template">
+       
+            <div>
+                <p-floatLabel>
+                    <input pInputText id="userName" formControlName="userName" />
+                    <label for="userName">מספר זהות*</label>
+                </p-floatLabel>
+                @if(frmUser.controls['userName'].errors){
+                <small class="p-invalid" *ngIf="frmUser.controls['userName'].errors['required']"></small>
+                <small class="p-invalid" *ngIf="frmUser.controls['userName'].errors['minlength']">שדה מספר זהות חייב להכיל מינימום 9 תווים</small>
+                <small class="p-invalid" *ngIf="frmUser.controls['userName'].errors['maxlength']">שדה מספר זהות מוגבל ל9 תווים</small>
+                }
+             </div> 
+            <!-- <p-password class="input" id="password" formControlName="password"/>
+            <div class="flex flex-wrap justify-content-center align-items-center gap-2">           
+                <input pInputText id="password" type="password" class="w-12rem" />
+                <label class="w-6rem"> סיסמא </label>
+            </div> -->
+        <div>
+            <div>
+                <p-floatLabel>
+                    <input type="password" pInputText id="password" formControlName="password" />
+                    <label for="on_label">סיסמא*</label>
+                </p-floatLabel>
+                @if(frmUser.controls['password'].errors){
+                <small class="p-invalid" *ngIf="frmUser.controls['password'].errors['required']"></small>
+                <small class="p-invalid" *ngIf="frmUser.controls['password'].errors['minlength']">שדה סיסמא חייב להכיל מינימום 7 תווים</small>
+                <small class="p-invalid" *ngIf="frmUser.controls['password'].errors['maxlength']">שדה סיסמא מוגבל ל15 תווים</small>
+                }
+            </div>
+        </div>
+        <div>
+            <div>
+                <p-floatLabel>
+                    <input pInputText id="fullName" formControlName="fullName" />
+                    <label for="fullName">שם מלא*</label>
+                </p-floatLabel>
+                @if(frmUser.controls['fullName'].errors){
+                <small class="p-invalid" *ngIf="frmUser.controls['fullName'].errors['required']"></small>
+                <small class="p-invalid" *ngIf="frmUser.controls['fullName'].errors['maxlength']">שדה שם מוגבל ל250 תווים</small>
+                }
+            </div>
+        </div>
+        <div>
+            <div>
+                <p-floatLabel>
+                    <input pInputText id="phone" formControlName="phone" />
+                    <label for="phone">טלפון*</label>
+                </p-floatLabel>
+                @if(frmUser.controls['phone'].errors){
+                <small class="p-invalid" *ngIf="frmUser.controls['phone'].errors['required']"></small>
+                <small class="p-invalid" *ngIf="frmUser.controls['phone'].errors['minlength']">שדה טלפון חייב להכיל מינימום 7 תווים</small>
+                <small class="p-invalid" *ngIf="frmUser.controls['phone'].errors['maxlength']">שדה טלפון מוגבל ל10 תווים</small>
+                }
+            </div>
+        </div>
+        <div>
+            <div>
+                <p-floatLabel>
+                    <input pInputText id="email" formControlName="email" />
+                    <label for="email">מייל*</label>
+                </p-floatLabel>
+                @if(frmUser.controls['email'].errors){
+                <small class="p-invalid" *ngIf="frmUser.controls['email'].errors['required']"></small>
+                <small class="p-invalid" *ngIf="frmUser.controls['email'].errors['email']">שדה מייל חייב להיות מסוג מייל</small>
+                }
+            </div>
+        </div>
+        <div>
+            <div>
+                <p-floatLabel>
+                    <input pInputText id="age" formControlName="age" />
+                    <label for="age">גיל</label>
+                </p-floatLabel>
+                @if(frmUser.controls['age'].errors){
+                <small class="p-invalid" *ngIf="frmUser.controls['age'].errors['maxlength']">שדה גיל מוגבל ל3 תווים</small>
+                }
+            </div>
+        </div>
+        <div>
+            <div>
+                <p-floatLabel>
+                    <input pInputText id="adress" formControlName="adress" />
+                    <label for="adress">כתובת*</label>
+                </p-floatLabel>
+                @if(frmUser.controls['adress'].errors){
+                <small class="p-invalid" *ngIf="frmUser.controls['adress'].errors['required']"></small>
+                <small class="p-invalid" *ngIf="frmUser.controls['adress'].errors['maxlength']">שדה כתובת מוגבל ל250 תווים</small>
+                }
+            </div>
+        </div>
+        <div class="buttons">
+        <p-button label="שמירה" icon="pi pi-check"  (click)="register()" [disabled]="!frmUser.valid" severity="success"/>
+        <p-button label="ביטול" icon="pi pi-times" (click)="cancelRegister()" severity="contrast"/>
+    </div>
+    </form>
+</div>

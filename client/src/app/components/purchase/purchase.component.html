@@ -1,0 +1,141 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <p-dialog dir="rtl" [(visible)]="allPurchaseDialog" [style]="{width: '950px'}" header="פרטי רוכשים" [modal]="true" styleClass="p-fluid">
+            <p-table [value]="allUsers" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="color: rgb(89,190,237);">שם רוכש </th>
+                        <th style="color: rgb(89,190,237);">טלפון </th>
+                        <th style="color: rgb(89,190,237);">מייל </th>
+                        <th style="color: rgb(89,190,237);">גיל </th>
+                        <th style="color: rgb(89,190,237);">כתובת </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                    <tr>
+                        <td>{{ user.fullName }}</td>
+                        <td>{{ user.phone }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.age }}</td>
+                        <td>{{ user.adress }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-dialog>
+        <ng-template pTemplate="left">
+            <p-button (click)="getAllDetails()" label="פרטי רוכשים"></p-button>
+            <p-button (click)="getWinners()" label="זוכים"></p-button>
+            <p-button class="flex-auto md:flex-initial white-space-nowrap" label="רווחים" (click)="totalBenfit()"></p-button>
+        </ng-template>
+        <p-dialog [(visible)]="benefitesDialog" [style]="{width: '450px'}" header="Donor List" [modal]="true" styleClass="p-fluid">
+            <div>
+             <span>רווחי המכירה עד כה הם:{{num | currency:'ILS'}} </span>
+             </div>
+         </p-dialog>
+        <p-dialog dir="rtl" [(visible)]="winnersDialog" [style]="{width: '950px'}" header="פרטי זוכים" [modal]="true" styleClass="p-fluid">
+            <p-table 
+            [value]="winners" 
+            styleClass="p-datatable-striped" 
+            [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>שם מתנה</th>
+                        <th>שם זוכה</th>
+                        <th>מייל</th>
+                        <th>טלפון</th>
+                        <th>כתובת</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-winner>
+                    <tr>
+                        <td>{{winner.giftname}}</td>
+                        <td>{{winner.winnerName}}</td>
+                        <td>{{winner.email}}</td>
+                        <td>{{winner.phone}}</td>
+                        <td>{{winner.address}}</td>
+                    </tr>
+                </ng-template>
+        </p-table>
+        </p-dialog>
+         <!-- זוכים -->
+    </p-toolbar>
+</div>
+<div class="wwww">
+    <p-table dir="rtl" #dt [value]="gifts" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']"
+        [(selection)]="selectedGifts" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="מציג {first} ל {last} של {totalRecords} ערכים" [showCurrentPageReport]="true" [rowsPerPageOptions]="[ 5,10,20]">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <h4 class="p-m-0">ניהול רכישות</h4>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="giftName"> שם מוצר <p-sortIcon field="giftName"></p-sortIcon></th>
+                <th pSortableColumn="price"> מחיר כרטיס <p-sortIcon field="price"></p-sortIcon></th>
+                <th pSortableColumn="image"> תמונה <p-sortIcon field="image"></p-sortIcon></th>
+                <th pSortableColumn="quantityOfPurchases"> כמות רכישות <p-sortIcon field="quantityOfPurchases"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-gift>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="gift"></p-tableCheckbox>
+                </td>
+                <td>{{gift.giftName}}</td>
+                <td>{{gift.price | currency:'USD'}}</td>
+                <td><img [src]="'images/' + gift.image" [alt]="gift.giftName" width="150" height="150" class="shadow-4" style="border-radius: 10px;"/></td>
+                <td>{{gift.quantityOfPurchases}}</td>
+                <td dir="ltr">
+                    <button  pButton pRipple icon="pi pi-address-book" class="p-button-rounded p-button" label="פרטי רוכשים" [outlined]="true" severity="info" (click)="PurchasersDetails(gift.id)"></button>
+                </td>
+                <td dir="ltr">
+                        @if(gift.winnerName == ''){
+                            <div class="flex flex-row-reverse md:flex-row gap-2">
+                                <button pButton pRipple icon="pi pi-sparkles" class="p-button-rounded p-button" label="הגרלה" severity="info" (click)="raffle(gift.id)" [disabled]="false" ></button>
+                            </div> 
+                        }
+                        @else{
+                            <div class="flex flex-row-reverse md:flex-row gap-2">
+                                <button pButton pRipple class="p-button-rounded p-button" label="ההגרלה נערכה" severity="info" (click)="raffle(gift.id)" [disabled]="true" ></button>
+                            </div> 
+                        }
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{gifts ? gifts.length : 0 }} gifts.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog dir="rtl" [(visible)]="purchaseDialog" [style]="{width: '950px'}" header="פרטי רוכשים" [modal]="true" styleClass="p-fluid">
+    <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="color: rgb(89,190,237);">שם רוכש </th>
+                <th style="color: rgb(89,190,237);">טלפון </th>
+                <th style="color: rgb(89,190,237);">מייל </th>
+                <th style="color: rgb(89,190,237);">גיל </th>
+                <th style="color: rgb(89,190,237);">כתובת </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+            <tr>
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.age }}</td>
+                <td>{{ user.adress }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>

@@ -1,0 +1,10 @@
+.lottery{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+.pas{
+    border-right:solid  rgba(175, 175, 175, 0.597);
+   
+
+}

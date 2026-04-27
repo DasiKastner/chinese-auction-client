@@ -1,0 +1,138 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
+                (click)="openNew()"></button>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+                (click)="deleteSelectedProducts()" [disabled]="!selectedDonors || !selectedDonors.length"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table dir="rtl" #dt [value]="donors" [rows]="5" [paginator]="true"
+        [globalFilterFields]="['name','country.name','representative.name','status']" [(selection)]="selectedDonors"
+        [rowHover]="true" dataKey="id" currentPageReportTemplate="מציג {first} ל {last} של {totalRecords} ערכים"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20]">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <h4 class="p-m-0">ניהול תורמים</h4>
+                <!-- <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                        <input 
+                            pInputText 
+                            type="text" 
+                            (input)="dt.filterGlobal(($any($event.target)).value, 'contains')" 
+                            placeholder="Search..." />
+                </span> -->
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="fullName">שם תורם <p-sortIcon field="fullName"></p-sortIcon></th>
+                <th pSortableColumn="phone">טלפון <p-sortIcon field="phone"></p-sortIcon></th>
+                <th pSortableColumn="email">מייל <p-sortIcon field="email"></p-sortIcon></th>
+                <th pSortableColumn="age">גיל <p-sortIcon field="age"></p-sortIcon></th>
+                <th pSortableColumn="adress">כתובת <p-sortIcon field="adress"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-donor>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="donor"></p-tableCheckbox>
+                </td>
+                <td>{{donor.fullName}}</td>
+                <td>{{donor.phone}}</td>
+                <td>{{donor.email}}</td>
+                <!-- <td><img [src]="'images/' + product.image" [alt]="product.giftName" width="100" height="100" class="shadow-4" style="border-radius: 10px;"/></td> -->
+                <td>{{donor.age}}</td>
+                <td>{{donor.adress}}</td>
+                <td class="buttons">
+                    <button pButton pRipple icon="pi pi-user-edit" class="p-button-rounded p-button-success p-mr-2"
+                        [outlined]="true" (click)="editProduct(donor)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                        [outlined]="true" (click)="deleteProduct(donor)"></button>
+                    <button pButton pRipple icon="pi pi-list" class="p-button-rounded p-button-rounded"
+                        [outlined]="true" (click)="list(donor)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{donors ? donors.length : 0 }} donors.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="donorDialog" [style]="{width: '450px'}" header="Donor Details" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="fullName">שם מלא</label>
+            <input type="text" pInputText id="name" [(ngModel)]="donor.fullName" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !donor.fullName">FullName is required.</small>
+        </div>
+        <!-- <div class="p-field">
+            <label for="phone">Phone</label>
+            <textarea id="phone" pInputTextarea [(ngModel)]="donor.phone" required rows="3" cols="20"></textarea>
+        </div> -->
+        <div class="p-field">
+            <label for="phone">טלפון</label>
+            <input type="text" pInputText id="phone" [(ngModel)]="donor.phone" required autofocus />
+            <!-- <small class="p-invalid" *ngIf="submitted && !product.giftName">Name is required.</small> -->
+        </div>
+        <div class="p-field">
+            <label for="email">מייל</label>
+            <input type="text" pInputText id="email" [(ngModel)]="donor.email" required autofocus />
+            <!-- <small class="p-invalid" *ngIf="submitted && !product.giftName">Name is required.</small> -->
+        </div>
+
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="age">גיל</label>
+                <p-inputNumber id="age" [(ngModel)]="donor.age"></p-inputNumber>
+            </div>
+        </div>
+        <div class="p-field">
+            <label for="adress">כתובת</label>
+            <input type="text" pInputText id="adress" [(ngModel)]="donor.adress" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !donor.adress">Adress is required.</small>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="dialogList" [style]="{width: '450px'}" header="Donor List" [modal]="true" styleClass="p-fluid">
+    <div class="card xl:flex xl:justify-center">
+        <p-orderList [value]="gifts" dataKey="id" breakpoint="575px" scrollHeight="20rem"
+        filterBy="giftName" 
+        filterPlaceholder="Filter by name">
+        
+            <ng-template pTemplate="item" let-option let-selected="selected">
+                <div class="item-container">
+                    <!-- תמונה -->
+                    <img class="item-image" [src]="'images/' + option.image" [alt]="option.giftName" />
+                    <!-- פרטי מתנה -->
+                    <div class="item-details">
+                        <div class="gift-name">{{ option.giftName }}</div>
+                        <div class="gift-category">{{ option.categoryName }}</div>
+                    </div>
+                    <!-- מחיר -->
+                    <div class="item-price">{{ '$' + option.price }}</div>
+                </div>
+            </ng-template>
+        </p-orderList>
+
+    </div>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
