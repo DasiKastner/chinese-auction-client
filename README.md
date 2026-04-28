@@ -21,61 +21,61 @@
 
 הפרויקט מבוסס על מבנה סטנדרטי של Angular וכולל:
 
-components
-services
-models
+- components
+- services
+- models
 
 ### פירוט:
-components – קומפוננטות UI (לדוגמה: דף הבית)
-services – שירותים לתקשורת עם השרת:
-CategoryService
-GiftServiceService
-DonorService
-CartService
-models – מודלים של הנתונים:
-Gift
-Donor
-Category
-Purchase
+- components – קומפוננטות UI (לדוגמה: דף הבית)
+- services – שירותים לתקשורת עם השרת:
+- CategoryService
+ -GiftServiceService
+ -DonorService
+- CartService
+- models – מודלים של הנתונים:
+- Gift
+- Donor
+- Category
+- Purchase
 זרימת עבודה (Client Flow)
-טעינת מתנות מהשרת בעת כניסה לדף הבית
-הוספת מתנה לעגלה
-שליפת עגלת המשתמש מהשרת
-עדכון כמויות או הסרת פריטים
-חישוב סכום כולל
-ביצוע רכישה עבור כל פריט בעגלה
-טכנולוגיות
-Frontend: Angular
-שפת פיתוח: TypeScript
-UI Library: PrimeNG
-ניהול נתונים: RxJS
-תקשורת עם שרת: HttpClient
-Authentication: JWT (sessionStorage)
+- טעינת מתנות מהשרת בעת כניסה לדף הבית
+- הוספת מתנה לעגלה
+- שליפת עגלת המשתמש מהשרת
+- עדכון כמויות או הסרת פריטים
+- חישוב סכום כולל
+- ביצוע רכישה עבור כל פריט בעגלה
+- טכנולוגיות
+- Frontend: Angular
+- שפת פיתוח: TypeScript
+- UI Library: PrimeNG
+- ניהול נתונים: RxJS
+- תקשורת עם שרת: HttpClient
+- Authentication: JWT (sessionStorage)
 ### תכונות עיקריות
-תצוגת מתנות במבנה Grid
-הוספה והסרה של פריטים מהעגלה
-עדכון כמות כרטיסים לכל מתנה
-עגלת קניות צדדית (Sidebar)
-חישוב סכום כולל בזמן אמת
-הודעות למשתמש (Toast)
-טיפול בשגיאות מהשרת
+- תצוגת מתנות במבנה Grid
+- הוספה והסרה של פריטים מהעגלה
+- עדכון כמות כרטיסים לכל מתנה
+- עגלת קניות צדדית (Sidebar)
+- חישוב סכום כולל בזמן אמת
+- הודעות למשתמש (Toast)
+- טיפול בשגיאות מהשרת
 
 ## איך להפעיל את הפרויקט
 ### דרישות מקדימות
-Node.js
-Angular CLI
+- Node.js
+- Angular CLI
 ### שלבים להרצה
-### התקנת חבילות:
+#### התקנת חבילות:
 ```bash
 npm install
 ```
-### הרצת הפרויקט:
+#### הרצת הפרויקט:
 ```bash
 ng serve
 ```
-### פתיחת הדפדפן בכתובת:
+#### פתיחת הדפדפן בכתובת:
 http://localhost:4200
-## הערות
-יש לוודא שצד השרת רץ לפני הפעלת צד הלקוח
-האפליקציה תלויה ב־API לצורך שליפת נתונים וביצוע פעולות
-זיהוי המשתמש מתבצע באמצעות Token הנשמר ב־sessionStorage
+### הערות
+- יש לוודא שצד השרת רץ לפני הפעלת צד הלקוח
+- האפליקציה תלויה ב־API לצורך שליפת נתונים וביצוע פעולות
+- זיהוי המשתמש מתבצע באמצעות Token הנשמר ב־sessionStorage
